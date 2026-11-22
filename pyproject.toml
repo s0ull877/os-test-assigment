@@ -18,17 +18,22 @@ dependencies = [
 ]
 
 [project.scripts]
-os-test-assignment-1 = "app:main"
+app = "src.app:main"
 
 [build-system]
 requires = ["uv_build>=0.12.1,<0.13.0"]
 build-backend = "uv_build"
 
+[tool.uv.build-backend]
+module-name = "src.app"
+module-root = ""
+
 [tool.uv]
-package = false
+package = true
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "pytest>=9.2.0",
     "pytest-asyncio>=1.5.0",
 ]
@@ -38,3 +43,31 @@ testpaths = ["tests"]
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_default_test_loop_scope = "function"
+
+
+# --- RUFF (Линтер и форматтер) ---
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "D"]
+ignore = [
+    "D100", 
+    "D104", 
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# --- MYPY (Статическая проверка типов) ---
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true 
