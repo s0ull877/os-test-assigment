@@ -17,3 +17,5 @@ wheels/
 
 #db
 data/db.sqlite3
+
+.ruff_cache
