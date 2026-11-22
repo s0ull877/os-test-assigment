@@ -48,7 +48,7 @@ uv --version
 ### 2. Клонировать репозиторий и подготовить окружение
 
 ```shell
-git clone --branch develop https://github.com/s0ull877/os-test-assigment.git
+git clone --branch master https://github.com/s0ull877/os-test-assigment.git
 cd os-test-assigment
 uv python install 3.13
 uv sync --locked --group dev
