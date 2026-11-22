@@ -1,7 +1,9 @@
 import uvicorn
+
 from src.app.infrastructure.config import get_settings
 
 app_settings = get_settings()
+
 
 def main():
     uvicorn.run(

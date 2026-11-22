@@ -31,8 +31,7 @@ async def get_bookings(
     """Получить список броней с необязательным фильтром по дате."""
     bookings = await booking_service.get_bookings(booking_date=booking_date)
     return [
-        BookingOut.model_validate(booking, from_attributes=True)
-        for booking in bookings
+        BookingOut.model_validate(booking, from_attributes=True) for booking in bookings
     ]
 
 

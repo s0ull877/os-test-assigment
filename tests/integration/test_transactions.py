@@ -1,6 +1,6 @@
-import pytest
-
 from unittest.mock import AsyncMock
+
+import pytest
 
 pytestmark = pytest.mark.asyncio
 
@@ -13,9 +13,7 @@ async def test_commit_failure_propagates_and_rolls_back(
     booking_data,
     monkeypatch,
 ):
-    failing_commit = AsyncMock(
-        side_effect=RuntimeError("simulated commit failure")
-    )
+    failing_commit = AsyncMock(side_effect=RuntimeError("simulated commit failure"))
     monkeypatch.setattr(session, "commit", failing_commit)
 
     with pytest.raises(RuntimeError, match="simulated commit failure"):

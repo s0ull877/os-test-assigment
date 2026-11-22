@@ -13,6 +13,7 @@ app = FastAPI(
     debug=app_settings.debug,
 )
 
+
 @app.exception_handler(ServiceError)
 async def service_error_handler(
     exc: ServiceError,
@@ -21,5 +22,6 @@ async def service_error_handler(
         status_code=exc.status_code,
         content={"detail": exc.message},
     )
+
 
 app.include_router(router=booking_router)

@@ -13,17 +13,15 @@ SessionDep = Annotated[
     Depends(database.get_db_session),
 ]
 
+
 async def get_booking_service(
     session: SessionDep,
 ):
     repository = BookingRepository(session=session)
 
     yield BookingService(
-        repository=repository,
-        transaction=SQLAlchemyTransaction(session=session)
+        repository=repository, transaction=SQLAlchemyTransaction(session=session)
     )
 
-BookingServiceDep = Annotated[
-    BookingService,
-    Depends(get_booking_service)
-]
+
+BookingServiceDep = Annotated[BookingService, Depends(get_booking_service)]

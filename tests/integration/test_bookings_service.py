@@ -12,9 +12,7 @@ from src.app.infrastructure.database.models import BookingModel
 pytestmark = pytest.mark.asyncio
 
 
-async def test_create_persists_booking(
-    service, session_factory, booking_data
-):
+async def test_create_persists_booking(service, session_factory, booking_data):
     created = await service.create_booking(booking_data)
 
     assert created.id > 0
@@ -46,9 +44,7 @@ async def test_duplicate_active_slot_is_rejected(service, booking_data):
     assert [booking.id for booking in bookings] == [created.id]
 
 
-async def test_cancel_is_idempotent_and_releases_slot(
-    service, booking_data
-):
+async def test_cancel_is_idempotent_and_releases_slot(service, booking_data):
     first = await service.create_booking(booking_data)
 
     # Проверяем также чтение перед следующей операцией записи.
@@ -94,9 +90,7 @@ async def test_list_filters_by_date(service, booking_data):
     )
     second = await service.create_booking(other_data)
 
-    filtered = await service.get_bookings(
-        booking_date=booking_data.booking_date
-    )
+    filtered = await service.get_bookings(booking_date=booking_data.booking_date)
 
     assert [booking.id for booking in filtered] == [first.id]
     assert {booking.id for booking in await service.get_bookings()} == {
@@ -106,9 +100,7 @@ async def test_list_filters_by_date(service, booking_data):
 
 
 @pytest.mark.parametrize("guests", [0, 11])
-async def test_check_violation_is_not_slot_conflict(
-    service, booking_data, guests
-):
+async def test_check_violation_is_not_slot_conflict(service, booking_data, guests):
     invalid = replace(booking_data, guests=guests)
 
     with pytest.raises(IntegrityError):
@@ -122,7 +114,7 @@ async def test_two_concurrent_cancellations_succeed(
 ):
     created = await service.create_booking(booking_data)
 
-    # Для параллельных задач нужны разные сессии. 
+    # Для параллельных задач нужны разные сессии.
     async with session_factory() as first, session_factory() as second:
         results = await asyncio.gather(
             service_factory(first).cancel_booking(created.id),
@@ -130,7 +122,4 @@ async def test_two_concurrent_cancellations_succeed(
         )
 
     assert all(booking.id == created.id for booking in results)
-    assert all(
-        booking.status is BookingStatus.CANCELLED
-        for booking in results
-    )
+    assert all(booking.status is BookingStatus.CANCELLED for booking in results)

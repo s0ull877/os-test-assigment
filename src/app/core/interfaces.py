@@ -3,16 +3,20 @@ from datetime import date
 
 from .entities import BookingCreateDTO, BookingResponseDTO
 
+
 class NotFoundRepositoryError(Exception):
     pass
+
 
 class AlreadyBookedRepositoryError(Exception):
     pass
 
+
 class IBookingRepository(ABC):
-    
     @abstractmethod
-    async def create_booking(self, booking_data: BookingCreateDTO) -> BookingResponseDTO:
+    async def create_booking(
+        self, booking_data: BookingCreateDTO
+    ) -> BookingResponseDTO:
         raise NotImplementedError
 
     @abstractmethod
@@ -24,5 +28,7 @@ class IBookingRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_all_bookings(self, booking_date: date | None = None) -> list[BookingResponseDTO]:
+    async def get_all_bookings(
+        self, booking_date: date | None = None
+    ) -> list[BookingResponseDTO]:
         raise NotImplementedError

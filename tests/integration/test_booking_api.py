@@ -34,7 +34,7 @@ async def test_success_status_codes_and_response_bodies(client, booking_payload)
 
     cancelled = await client.delete(f"/bookings/{booking['id']}")
     assert cancelled.status_code == 200
-    assert cancelled.json()['status'] == "cancelled"
+    assert cancelled.json()["status"] == "cancelled"
 
     repeated = await client.delete(f"/bookings/{booking['id']}")
     assert repeated.status_code == 200
@@ -117,9 +117,7 @@ async def test_missing_booking_returns_404(client, method):
         pytest.param("booking_time", "12:30", id="nonzero-minutes"),
     ],
 )
-async def test_invalid_fields_return_422(
-    client, booking_payload, field, value
-):
+async def test_invalid_fields_return_422(client, booking_payload, field, value):
 
     response = await client.post(
         "/bookings",
@@ -131,6 +129,3 @@ async def test_invalid_fields_return_422(
     listed = await client.get("/bookings")
     assert listed.status_code == 200
     assert listed.json() == []
-
-
-

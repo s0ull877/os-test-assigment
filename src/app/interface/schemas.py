@@ -1,13 +1,14 @@
-from typing import Literal, Self
-from datetime import date, time, timedelta, datetime
+from datetime import date, datetime, time, timedelta
+from typing import Self
+
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from src.app.core.entities import BookingStatus
 
-class BookingCreate(BaseModel):
 
+class BookingCreate(BaseModel):
     name: str = Field(min_length=2, max_length=50)
-    phone: str = Field(pattern=r'^\+7\d{10}$')
+    phone: str = Field(pattern=r"^\+7\d{10}$")
     booking_date: date
     booking_time: time
     guests: int = Field(ge=1, le=10)
@@ -29,17 +30,13 @@ class BookingCreate(BaseModel):
     @classmethod
     def validate_booking_time(cls, value: time) -> time:
         if value.tzinfo is not None:
-            raise ValueError(
-                "Booking time must not contain a timezone offset"
-            )
+            raise ValueError("Booking time must not contain a timezone offset")
 
         if value.minute != 0 or value.second != 0 or value.microsecond != 0:
             raise ValueError("Booking time must be a whole hour")
 
         if not time(12, 0) <= value <= time(22, 0):
-            raise ValueError(
-                "Booking time must be between 12:00 and 22:00"
-            )
+            raise ValueError("Booking time must be between 12:00 and 22:00")
 
         return value
 
@@ -58,7 +55,6 @@ class BookingCreate(BaseModel):
 
 
 class BookingOut(BaseModel):
-
     id: int
     name: str
     phone: str

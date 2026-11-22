@@ -26,14 +26,10 @@ async def session_factory(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> AsyncIterator[async_sessionmaker[AsyncSession]]:
-    monkeypatch.setattr(
-        repository_module.setting, "db_engine", "sqlite+aiosqlite"
-    )
+    monkeypatch.setattr(repository_module.setting, "db_engine", "sqlite+aiosqlite")
 
     db_path = tmp_path / "test.sqlite3"
-    engine = create_async_engine(
-        f"sqlite+aiosqlite:///{db_path.as_posix()}"
-    )
+    engine = create_async_engine(f"sqlite+aiosqlite:///{db_path.as_posix()}")
 
     try:
         async with engine.begin() as connection:
@@ -84,11 +80,7 @@ def fixed_clock(
     class FixedDatetime(datetime):
         @classmethod
         def now(cls, tz=None):
-            return (
-                reference_time
-                if tz is None
-                else reference_time.astimezone(tz)
-            )
+            return reference_time if tz is None else reference_time.astimezone(tz)
 
     monkeypatch.setattr(schemas, "date", FixedDate)
     monkeypatch.setattr(schemas, "datetime", FixedDatetime)

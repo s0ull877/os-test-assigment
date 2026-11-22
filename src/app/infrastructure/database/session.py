@@ -1,16 +1,18 @@
 from asyncio import current_task
-from src.app.infrastructure.config import get_settings
+
 from sqlalchemy.ext.asyncio import (
-    async_sessionmaker,
-    create_async_engine,
     AsyncSession,
     async_scoped_session,
+    async_sessionmaker,
+    create_async_engine,
 )
+
+from src.app.infrastructure.config import get_settings
 
 settings = get_settings()
 
-class Database:
 
+class Database:
     def __init__(self, url: str, echo: bool = False):
         self.engine = create_async_engine(url=url, echo=echo)
 
@@ -30,7 +32,7 @@ class Database:
 
         try:
             yield session
-        except exc.SQLAlchemyError as error:
+        except exc.SQLAlchemyError:
             await session.rollback()
             raise
         finally:
