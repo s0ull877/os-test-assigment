@@ -8,14 +8,33 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "aiosqlite>=0.22.1",
+    "alembic>=1.20.1",
     "fastapi>=0.165.0",
     "pydantic>=2.14.4",
+    "pydantic-settings>=2.16.3",
+    "sqlalchemy[asyncio]>=2.1.9",
     "uvicorn>=0.54.0",
 ]
 
 [project.scripts]
-os-test-assignment-1 = "os_test_assignment_1:main"
+os-test-assignment-1 = "app:main"
 
 [build-system]
 requires = ["uv_build>=0.12.1,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.5.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+asyncio_default_test_loop_scope = "function"
